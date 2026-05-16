@@ -39,21 +39,30 @@ func cleanInput(text string) []string {
 }
 
 func getCommands() map[string]cliCommand {
-	return map[string]cliCommand {
+	return map[string]cliCommand{
 		"exit": {
-			name: "exit",
+			name:        "exit",
 			description: "Exit the Pokedex",
-			callback: commandExit,
+			callback:    commandExit,
 		},
 		"help": {
-			name: "help",
+			name:        "help",
 			description: "Displays the help",
-			callback: commandHelp,
+			callback:    commandHelp,
 		},
 		"map": {
-			name: "map",
+			name:        "map",
 			description: "displays all next 20 locations",
-			callback: commandMap,
+			callback:    func() error {
+				return commandMap(&mapState)
+			},
+		},
+		"mapb": {
+			name: "mapb",
+			description: "displas all previous 20 locations",
+			callback: func() error {
+				return commandMapB(&mapState)
+			},
 		},
 	}
 }
