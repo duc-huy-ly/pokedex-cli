@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-var mapState = config{
+var MapState = config{
 	Next:     "https://pokeapi.co/api/v2/location-area/",
 	Previous: "",
 }
@@ -22,7 +22,7 @@ type LocationAreaEndpoint struct {
 	} `json:"results"`
 }
 
-func commandMap(c *config) error {
+func CommandMap(c *config) error {
 	if c.Next == "" {
 		return fmt.Errorf("No link to make the GET request.\n")
 	}
@@ -59,7 +59,7 @@ func setUrl(c *config, previous string, next string) {
 	c.Next = next
 }
 
-func commandMapB(c *config) error {
+func CommandMapB(c *config) error {
 	if c.Previous == "" {
 		return fmt.Errorf("No link to make the GET request.\n")
 	}

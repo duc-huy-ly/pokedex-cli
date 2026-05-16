@@ -15,18 +15,18 @@ func TestCleanInput(t *testing.T) {
 		},
 		// add more cases here
 		{
-			input : "good    afternoon",
+			input:    "good    afternoon",
 			expected: []string{"good", "afternoon"},
 		},
 	}
 	for _, c := range cases {
-		actual := cleanInput(c.input)
+		actual := CleanInput(c.input)
 		// Check the length of the actual slice against the expected slice
 		// if they don't match, use t.Errorf to print an error message
 		// and fail the test
-		if len(actual) != len(c.expected){
+		if len(actual) != len(c.expected) {
 			t.Errorf("Lengths of return values do not match. expected %v, got %v", len(c.expected), len(actual))
-		}	
+		}
 		for i := range actual {
 			word := actual[i]
 			expectedWord := c.expected[i]

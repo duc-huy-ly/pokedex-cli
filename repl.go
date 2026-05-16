@@ -7,22 +7,22 @@ import (
 	"strings"
 )
 
-type cliCommand struct {
+type CliCommand struct {
 	name        string
 	description string
 	callback    func() error
 }
 
-func startRepl() {
+func StartRepl() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
 		_ = scanner.Scan()
-		token := cleanInput(scanner.Text())
+		token := CleanInput(scanner.Text())
 		if len(token) == 0 {
 			continue
 		}
-		command, exists := getCommands()[token[0]]
+		command, exists := GetCommands()[token[0]]
 		if !exists {
 			fmt.Println("Unknown command")
 			continue
@@ -34,34 +34,34 @@ func startRepl() {
 	}
 }
 
-func cleanInput(text string) []string {
+func CleanInput(text string) []string {
 	return strings.Fields(strings.ToLower(text))
 }
 
-func getCommands() map[string]cliCommand {
-	return map[string]cliCommand{
+func GetCommands() map[string]CliCommand {
+	return map[string]CliCommand{
 		"exit": {
 			name:        "exit",
 			description: "Exit the Pokedex",
-			callback:    commandExit,
+			callback:    CommandExit,
 		},
 		"help": {
 			name:        "help",
 			description: "Displays the help",
-			callback:    commandHelp,
+			callback:    CommandHelp,
 		},
 		"map": {
 			name:        "map",
 			description: "displays all next 20 locations",
-			callback:    func() error {
-				return commandMap(&mapState)
+			callback: func() error {
+				return CommandMap(&MapState)
 			},
 		},
 		"mapb": {
-			name: "mapb",
+			name:        "mapb",
 			description: "displays all previous 20 locations",
 			callback: func() error {
-				return commandMapB(&mapState)
+				return CommandMapB(&MapState)
 			},
 		},
 	}
