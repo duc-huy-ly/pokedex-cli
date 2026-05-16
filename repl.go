@@ -27,23 +27,15 @@ func startRepl() {
 			fmt.Println("Unknown command")
 			continue
 		}
-		command.callback()
+		err := command.callback()
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 
 func cleanInput(text string) []string {
 	return strings.Fields(strings.ToLower(text))
-}
-
-func commandExit() error {
-	fmt.Println("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-	return fmt.Errorf("os.Exit didn't close properly")
-}
-
-func commandHelp() error {
-	fmt.Printf("Welcome to the Pokedex!\nUsage:\n\nhelp: Displays a help message\nexit: Exit the Pokedex\n")
-	return nil
 }
 
 func getCommands() map[string]cliCommand {
@@ -57,6 +49,11 @@ func getCommands() map[string]cliCommand {
 			name: "help",
 			description: "Displays the help",
 			callback: commandHelp,
+		},
+		"map": {
+			name: "map",
+			description: "displays all next 20 locations",
+			callback: commandMap,
 		},
 	}
 }
