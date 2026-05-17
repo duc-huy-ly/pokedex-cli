@@ -10,14 +10,31 @@ func CommandMapB(c *pokeapi.Config) error {
 	if url == "" {
 		return fmt.Errorf("No link to make the GET request.\n")
 	}
-	request, err := pokeapi.ListLocations(url)
+	// Cache first
+	
+	data, exists := pokeapi.MyCache.Get(url)
+	if exists {
+		locations, err :=pokeapi.Convert(data)
+		if err != nil {
+			return err
+		}
+		for _, location := range locations.Results {
+			fmt.Println(location.Name)
+		}
+		return nil
+	}
 
+	// case not in case, do the api call
+
+	request, err := pokeapi.ListLocations(url)
 	if err != nil {
 		return fmt.Errorf("%v\n", err)
 	}
+	// displays the 20 locations 
 	for _, result := range request.Results {
 		fmt.Println(result.Name)
 	}
+	/// update the list of the configuration file
 	if request.Previous != "" {
 		c.Previous = request.Previous
 		c.Next = c.Previous

@@ -31,9 +31,14 @@ func ListLocations(url string) (LocationsRequest, error) {
 	if err != nil {
 		return request, fmt.Errorf("Error reading from the response body : %v\n", err)
 	}
-	err = json.Unmarshal(body, &request)
+	return Convert(body)
+}
+
+func Convert(data []byte) (LocationsRequest, error) {
+	request := LocationsRequest{}
+	err := json.Unmarshal(data, &request)
 	if err != nil {
 		return request, fmt.Errorf("Error unmarshaling response body, got : %v\n", err)
 	}
-	return request, nil	
+	return request, nil
 }
