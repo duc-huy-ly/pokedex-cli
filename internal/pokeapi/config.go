@@ -1,18 +1,23 @@
 package pokeapi
 
 import (
+	"net/http"
 	"pokedex_cli/internal/pokecache"
 	"time"
 )
 
-var MapState = Config{
-	Next:     "https://pokeapi.co/api/v2/location-area/",
-	Previous: "",
+var LocalConfig = Config{
+	NextPageUrl:     "https://pokeapi.co/api/v2/location-area/",
+	PreviousPageUrl: "",
+	Client: http.Client{
+		Timeout: 10,
+	},
+	Cache : *pokecache.NewCache(30 * time.Second),
 }
 
-var MyCache = pokecache.NewCache(30 * time.Second)
-
 type Config struct {
-	Next     string
-	Previous string
+	NextPageUrl     string
+	PreviousPageUrl string
+	Client          http.Client
+	Cache pokecache.Cache
 }

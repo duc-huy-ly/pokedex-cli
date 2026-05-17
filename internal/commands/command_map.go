@@ -6,24 +6,24 @@ import (
 	"pokedex_cli/internal/pokeapi"
 )
 
-func CommandMap(c *pokeapi.Config) error {
-	url := c.Next
+func CommandMap(cfg *pokeapi.Config) error {
+	url := cfg.NextPageUrl
 	if url == "" {
 		return fmt.Errorf("No link to make the GET request.\n")
 	}
 	// Cache first
-	
-	data, exists := pokeapi.MyCache.Get(url)
+
+	data, exists := cfg.Cache.Get(url)
 	if exists {
-		locations, err :=pokeapi.Convert(data)
+		locations, err := pokeapi.Convert(data)
 		if err != nil {
 			return err
 		}
 		for _, location := range locations.Results {
 			fmt.Println(location.Name)
 		}
-		c.Previous = c.Next
-		c.Next = locations.Next
+		cfg.PreviousPageUrl = cfg.NextPageUrl
+		cfg.NextPageUrl = locations.Next
 		fmt.Println("#########################")
 		fmt.Println("Data recovered from cache")
 		fmt.Println("#########################")
@@ -31,7 +31,7 @@ func CommandMap(c *pokeapi.Config) error {
 	}
 
 	// case not in case, do the api call
-	request, err := pokeapi.ListLocations(c.Next)
+	request, err := pokeapi.ListLocations(cfg.NextPageUrl)
 	if err != nil {
 		return fmt.Errorf("%v\n", err)
 	}
@@ -39,9 +39,9 @@ func CommandMap(c *pokeapi.Config) error {
 		fmt.Println(result.Name)
 	}
 	if request.Next != "" {
-		c.Previous = c.Next
-		c.Next = request.Next
+		cfg.PreviousPageUrl = cfg.NextPageUrl
+		cfg.NextPageUrl = request.Next
 	}
-	// update the cache 
+	// update the cache
 	return nil
 }

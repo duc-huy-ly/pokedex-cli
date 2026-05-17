@@ -5,24 +5,24 @@ import (
 	"pokedex_cli/internal/pokeapi"
 )
 
-func CommandMapB(c *pokeapi.Config) error {
-	url := c.Previous
+func CommandMapB(cfg *pokeapi.Config) error {
+	url := cfg.PreviousPageUrl
 	if url == "" {
 		return fmt.Errorf("No link to make the GET request.\n")
 	}
 	// Cache first
-	
-	data, exists := pokeapi.MyCache.Get(url)
+
+	data, exists := cfg.Cache.Get(url)
 	if exists {
-		locations, err :=pokeapi.Convert(data)
+		locations, err := pokeapi.Convert(data)
 		if err != nil {
 			return err
 		}
 		for _, location := range locations.Results {
 			fmt.Println(location.Name)
 		}
-		c.Previous = locations.Previous
-		c.Next = c.Previous
+		cfg.PreviousPageUrl = locations.Previous
+		cfg.NextPageUrl = cfg.PreviousPageUrl
 		fmt.Println("#########################")
 		fmt.Println("Data recovered from cache")
 		fmt.Println("#########################")
@@ -35,14 +35,14 @@ func CommandMapB(c *pokeapi.Config) error {
 	if err != nil {
 		return fmt.Errorf("%v\n", err)
 	}
-	// displays the 20 locations 
+	// displays the 20 locations
 	for _, result := range request.Results {
 		fmt.Println(result.Name)
 	}
 	/// update the list of the configuration file
 	if request.Previous != "" {
-		c.Previous = request.Previous
-		c.Next = c.Previous
+		cfg.PreviousPageUrl = request.Previous
+		cfg.NextPageUrl = cfg.PreviousPageUrl
 	}
 	return nil
 }

@@ -32,7 +32,7 @@ func ListLocations(url string) (LocationsRequest, error) {
 		return request, fmt.Errorf("Error reading from the response body : %v\n", err)
 	}
 	// update the cache 
-	MyCache.Add(url, body)
+	LocalConfig.Cache.Add(url, body)
 	return Convert(body)
 }
 

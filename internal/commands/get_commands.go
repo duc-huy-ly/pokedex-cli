@@ -18,14 +18,14 @@ func GetCommands() map[string]CliCommand {
 			Name:        "map",
 			Description: "displays all next 20 locations",
 			Callback: func() error {
-				return CommandMap(&pokeapi.MapState)
+				return CommandMap(&pokeapi.LocalConfig)
 			},
 		},
 		"mapb": {
 			Name:        "mapb",
 			Description: "displays all previous 20 locations",
 			Callback: func() error {
-				return CommandMapB(&pokeapi.MapState)
+				return CommandMapB(&pokeapi.LocalConfig)
 			},
 		},
 	}
