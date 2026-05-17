@@ -1,6 +1,13 @@
 package pokeapi
 
-type LocationAreaEndpoint struct {
+import (
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+)
+
+type LocationsRequest struct {
 	Count    int    `json:"count"`
 	Next     string `json:"next"`
 	Previous string `json:"previous"`
@@ -8,4 +15,25 @@ type LocationAreaEndpoint struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
 	} `json:"results"`
+}
+
+func ListLocations(url string) (LocationsRequest, error) {
+	request := LocationsRequest{}
+	resp, err := http.Get(url)
+	if err != nil {
+		return request, fmt.Errorf("error encountered at commandMap() : %v\n", err)
+	}
+	body, err := io.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	if resp.StatusCode > 299 {
+		return request, fmt.Errorf("Response failed with status code %d and \n%s\n", resp.StatusCode, body)
+	}
+	if err != nil {
+		return request, fmt.Errorf("Error reading from the response body : %v\n", err)
+	}
+	err = json.Unmarshal(body, &request)
+	if err != nil {
+		return request, fmt.Errorf("Error unmarshaling response body, got : %v\n", err)
+	}
+	return request, nil	
 }
