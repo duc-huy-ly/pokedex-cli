@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"strings"
 	"pokedex_cli/internal/commands"
+	"pokedex_cli/internal/pokeapi"
+	"strings"
 )
 
 
 
-func StartRepl() {
+func StartRepl(cfg *pokeapi.Config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -24,7 +25,7 @@ func StartRepl() {
 			fmt.Println("Unknown command")
 			continue
 		}
-		err := command.Callback()
+		err := command.Callback(cfg)
 		if err != nil {
 			fmt.Println(err)
 		}

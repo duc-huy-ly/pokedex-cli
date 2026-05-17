@@ -1,6 +1,5 @@
 package commands
 
-import "pokedex_cli/internal/pokeapi"
 
 func GetCommands() map[string]CliCommand {
 	return map[string]CliCommand{
@@ -17,16 +16,12 @@ func GetCommands() map[string]CliCommand {
 		"map": {
 			Name:        "map",
 			Description: "displays all next 20 locations",
-			Callback: func() error {
-				return CommandMap(&pokeapi.LocalConfig)
-			},
+			Callback: 	CommandMap,
 		},
 		"mapb": {
 			Name:        "mapb",
 			Description: "displays all previous 20 locations",
-			Callback: func() error {
-				return CommandMapB(&pokeapi.LocalConfig)
-			},
+			Callback: CommandMapB,
 		},
 	}
 }

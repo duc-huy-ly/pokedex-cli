@@ -1,8 +1,11 @@
 package commands
 
-import "fmt"
+import (
+	"fmt"
+	"pokedex_cli/internal/pokeapi"
+)
 
-func CommandHelp() error {
+func CommandHelp(cfg *pokeapi.Config) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
