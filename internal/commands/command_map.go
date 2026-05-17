@@ -1,28 +1,15 @@
-package main
+package commands
 
 import (
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+
+	"pokedex_cli/internal/pokeapi"
 )
 
-var MapState = config{
-	Next:     "https://pokeapi.co/api/v2/location-area/",
-	Previous: "",
-}
-
-type LocationAreaEndpoint struct {
-	Count    int    `json:"count"`
-	Next     string `json:"next"`
-	Previous string `json:"previous"`
-	Results  []struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-	} `json:"results"`
-}
-
-func CommandMap(c *config) error {
+func CommandMap(c *pokeapi.Config) error {
 	if c.Next == "" {
 		return fmt.Errorf("No link to make the GET request.\n")
 	}
@@ -38,7 +25,7 @@ func CommandMap(c *config) error {
 	if err != nil {
 		return fmt.Errorf("Error reading from the response body : %v\n", err)
 	}
-	request := LocationAreaEndpoint{}
+	request := pokeapi.LocationAreaEndpoint{}
 	err = json.Unmarshal(body, &request)
 	if err != nil {
 		return fmt.Errorf("Error unmarshaling response body, got : %v\n", err)
@@ -54,12 +41,12 @@ func CommandMap(c *config) error {
 	return nil
 }
 
-func setUrl(c *config, previous string, next string) {
+func setUrl(c *pokeapi.Config, previous string, next string) {
 	c.Previous = previous
 	c.Next = next
 }
 
-func CommandMapB(c *config) error {
+func CommandMapB(c *pokeapi.Config) error {
 	if c.Previous == "" {
 		return fmt.Errorf("No link to make the GET request.\n")
 	}
@@ -75,7 +62,7 @@ func CommandMapB(c *config) error {
 	if err != nil {
 		return fmt.Errorf("Error reading from the response body : %v\n", err)
 	}
-	request := LocationAreaEndpoint{}
+	request := pokeapi.LocationAreaEndpoint{}
 	err = json.Unmarshal(body, &request)
 	if err != nil {
 		return fmt.Errorf("Error unmarshaling response body, got : %v\n", err)
