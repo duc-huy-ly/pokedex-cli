@@ -22,6 +22,11 @@ func CommandMap(c *pokeapi.Config) error {
 		for _, location := range locations.Results {
 			fmt.Println(location.Name)
 		}
+		c.Previous = c.Next
+		c.Next = locations.Next
+		fmt.Println("#########################")
+		fmt.Println("Data recovered from cache")
+		fmt.Println("#########################")
 		return nil
 	}
 
@@ -37,5 +42,6 @@ func CommandMap(c *pokeapi.Config) error {
 		c.Previous = c.Next
 		c.Next = request.Next
 	}
+	// update the cache 
 	return nil
 }
