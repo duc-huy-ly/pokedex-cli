@@ -4,8 +4,10 @@ import (
 	"sync"
 	"time"
 )
-
-
+type Cache struct {
+	Entries map[string]cacheEntry
+	mu      sync.Mutex
+}
 type cacheEntry struct {
 	CreatedAt time.Time
 	Val       []byte
@@ -18,11 +20,6 @@ func NewCache(_interval time.Duration) *Cache {
 	}
 	go result.reapLoop(_interval)
 	return &result
-}
-
-type Cache struct {
-	Entries map[string]cacheEntry
-	mu      sync.Mutex
 }
 
 func (_cache *Cache) Add(key string, val []byte) {
