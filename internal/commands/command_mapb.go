@@ -3,18 +3,18 @@ package commands
 import (
 	"fmt"
 	"pokedex_cli/internal/pokeapi"
+	"time"
 )
 
 func CommandMapB(cfg *pokeapi.Config) error {
 	url := cfg.PreviousPageUrl
 	if url == "" {
-		return fmt.Errorf("No link to make the GET request.\n")
+		url = pokeapi.DefaultLocationUrl
 	}
-	// Cache first
-
+	//Cache first
 	data, exists := cfg.Cache.Get(url)
 	if exists {
-		locations, err := pokeapi.Convert(data)
+		locations, err := pokeapi.UnmarshalLocation(data)
 		if err != nil {
 			return err
 		}
@@ -22,7 +22,7 @@ func CommandMapB(cfg *pokeapi.Config) error {
 			fmt.Println(location.Name)
 		}
 		cfg.PreviousPageUrl = locations.Previous
-		cfg.NextPageUrl = cfg.PreviousPageUrl
+		cfg.NextPageUrl = locations.Next
 		fmt.Println("#########################")
 		fmt.Println("Data recovered from cache")
 		fmt.Println("#########################")
@@ -30,19 +30,23 @@ func CommandMapB(cfg *pokeapi.Config) error {
 	}
 
 	// case not in case, do the api call
-
-	request, err := pokeapi.ListLocations(url)
+	client := pokeapi.NewClient(5 * time.Second)
+	request, err := pokeapi.ListLocations(*client,url )
 	if err != nil {
 		return fmt.Errorf("%v\n", err)
 	}
+	locations, err := pokeapi.UnmarshalLocation(request)
+	if err != nil {
+		return err
+	}
 	// displays the 20 locations
-	for _, result := range request.Results {
+	for _, result := range locations.Results {
 		fmt.Println(result.Name)
 	}
 	/// update the list of the configuration file
-	if request.Previous != "" {
-		cfg.PreviousPageUrl = request.Previous
-		cfg.NextPageUrl = cfg.PreviousPageUrl
-	}
+	cfg.PreviousPageUrl = locations.Previous
+	cfg.NextPageUrl =  locations.Next
+	// update the cache
+	cfg.Cache.Add(url, request)
 	return nil
 }
