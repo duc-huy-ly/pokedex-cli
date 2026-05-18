@@ -23,5 +23,11 @@ func GetCommands() map[string]CliCommand {
 			Description: "displays all previous 20 locations",
 			Callback: CommandMapB,
 		},
+		"explore": {
+			Name: "explore",
+			Description: "displays list of pokemon of the region given in argument",
+			Callback: CommandExplore,
+			
+		},
 	}
 }

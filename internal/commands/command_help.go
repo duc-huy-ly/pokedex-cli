@@ -5,7 +5,7 @@ import (
 	"pokedex_cli/internal/pokeapi"
 )
 
-func CommandHelp(cfg *pokeapi.Config) error {
+func CommandHelp(cfg *pokeapi.Config, args[]string) error {
 	fmt.Println()
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")

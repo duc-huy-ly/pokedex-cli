@@ -7,7 +7,7 @@ import (
 	"pokedex_cli/internal/pokeapi"
 )
 
-func CommandMap(cfg *pokeapi.Config) error {
+func CommandMap(cfg *pokeapi.Config, args[]string) error {
 	url := cfg.NextPageUrl
 	if url == "" {
 		url = pokeapi.DefaultLocationUrl

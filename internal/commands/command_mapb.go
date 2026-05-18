@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func CommandMapB(cfg *pokeapi.Config) error {
+func CommandMapB(cfg *pokeapi.Config, args[]string) error {
 	url := cfg.PreviousPageUrl
 	if url == "" {
 		url = pokeapi.DefaultLocationUrl

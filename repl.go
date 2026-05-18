@@ -25,7 +25,7 @@ func StartRepl(cfg *pokeapi.Config) {
 			fmt.Println("Unknown command")
 			continue
 		}
-		err := command.Callback(cfg)
+		err := command.Callback(cfg, token[1:])
 		if err != nil {
 			fmt.Println(err)
 		}
