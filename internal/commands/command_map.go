@@ -7,7 +7,7 @@ import (
 	"pokedex_cli/internal/pokeapi"
 )
 
-func CommandMap(cfg *pokeapi.Config, args[]string) error {
+func CommandMap(cfg *pokeapi.Config, args []string) error {
 	url := cfg.NextPageUrl
 	if url == "" {
 		url = pokeapi.DefaultLocationUrl
@@ -32,7 +32,7 @@ func CommandMap(cfg *pokeapi.Config, args[]string) error {
 
 	// case not in case, do the api call
 	client := pokeapi.NewClient(5 * time.Second)
-	request, err := pokeapi.ListLocations(*client, url)
+	request, err := pokeapi.MakeRequest(*client, url)
 	if err != nil {
 		return fmt.Errorf("%v\n", err)
 	}

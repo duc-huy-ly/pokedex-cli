@@ -34,3 +34,10 @@ func (myClient *MyClient) SendRequest(requestType string, url string) ([]byte , 
 	}
 	return body, nil
 }
+func MakeRequest(client MyClient, url string) ([]byte, error) {
+	data, err := client.SendRequest("GET", url)
+	if err != nil {
+		return nil, err
+	}
+	return data, err
+}

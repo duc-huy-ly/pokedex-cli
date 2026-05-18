@@ -6,12 +6,12 @@ import (
 )
 
 const (
-	pokemonAPIEndpoint    = "https://pokeapi.co/api/v2/"
-	timeoutDuration = 10 // seconds
+	PokemonAPIEndpoint    = "https://pokeapi.co/api/v2/"
+	DefaultTimeoutDuration = 10 * time.Second// seconds
 )
 
 var LocalConfig = Config{
-	Cache: *pokecache.NewCache(timeoutDuration * time.Second),
+	Cache: *pokecache.NewCache(DefaultTimeoutDuration),
 }
 
 type Config struct {

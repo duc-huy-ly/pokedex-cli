@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func CommandMapB(cfg *pokeapi.Config, args[]string) error {
+func CommandMapB(cfg *pokeapi.Config, args []string) error {
 	url := cfg.PreviousPageUrl
 	if url == "" {
 		url = pokeapi.DefaultLocationUrl
@@ -31,7 +31,7 @@ func CommandMapB(cfg *pokeapi.Config, args[]string) error {
 
 	// case not in case, do the api call
 	client := pokeapi.NewClient(5 * time.Second)
-	request, err := pokeapi.ListLocations(*client,url )
+	request, err := pokeapi.MakeRequest(*client, url)
 	if err != nil {
 		return fmt.Errorf("%v\n", err)
 	}
@@ -45,7 +45,7 @@ func CommandMapB(cfg *pokeapi.Config, args[]string) error {
 	}
 	/// update the list of the configuration file
 	cfg.PreviousPageUrl = locations.Previous
-	cfg.NextPageUrl =  locations.Next
+	cfg.NextPageUrl = locations.Next
 	// update the cache
 	cfg.Cache.Add(url, request)
 	return nil

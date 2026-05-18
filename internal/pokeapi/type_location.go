@@ -17,13 +17,7 @@ type LocationStruct struct {
 	} `json:"results"`
 }
 
-func ListLocations(client MyClient, url string) ([]byte, error) {
-	data, err := client.SendRequest("GET", url)
-	if err != nil {
-		return nil, err
-	}
-	return	data, err
-}
+
 
 func UnmarshalLocation(data []byte) (LocationStruct, error) {
 	request := LocationStruct{}
