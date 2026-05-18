@@ -16,16 +16,16 @@ func StartRepl(cfg *pokeapi.Config) {
 	for {
 		fmt.Print("Pokedex > ")
 		_ = scanner.Scan()
-		token := CleanInput(scanner.Text())
-		if len(token) == 0 {
+		tokens := CleanInput(scanner.Text())
+		if len(tokens) == 0 {
 			continue
 		}
-		command, exists := commands.GetCommands()[token[0]]
+		command, exists := commands.GetCommands()[tokens[0]]
 		if !exists {
 			fmt.Println("Unknown command")
 			continue
 		}
-		err := command.Callback(cfg, token[1:])
+		err := command.Execute()
 		if err != nil {
 			fmt.Println(err)
 		}

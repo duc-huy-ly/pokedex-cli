@@ -24,6 +24,7 @@ func CommandExplore(cfg *pokeapi.Config, args []string) error {
 		return nil
 
 	}
+	// make request to pokemon api endpoint else not in cahce
 	client := pokeapi.NewClient(pokeapi.DefaultTimeoutDuration)
 	resp, err := client.SendRequest("GET", locationUrl)
 	if err != nil {
@@ -38,6 +39,7 @@ func CommandExplore(cfg *pokeapi.Config, args []string) error {
 	for _, pokemon := range decodedResponse.PokemonEncounters {
 		fmt.Printf(" - %v\n", pokemon.Pokemon.Name)
 	}
+
 	cfg.Cache.Add(locationUrl, resp)
 	return nil
 }

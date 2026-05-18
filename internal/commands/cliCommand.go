@@ -1,9 +1,18 @@
 package commands
 
-import "pokedex_cli/internal/pokeapi"
+import "fmt"
 
+
+type ICommand interface {
+	Execute() error
+}
 type CliCommand struct {
 	Name        string
 	Description string
-	Callback    func(*pokeapi.Config, []string) error
+	Arguments   []string
+}
+
+func (c *CliCommand) Execute() error{
+	fmt.Println("Called execute from parent")
+	return nil
 }

@@ -3,11 +3,16 @@ package commands
 import (
 	"fmt"
 	"os"
-	"pokedex_cli/internal/pokeapi"
 )
 
-func CommandExit(cfg *pokeapi.Config, args[]string) error {
+type ExitCommand struct {
+	CliCommand
+}
+
+
+func (c *ExitCommand) Execute() error {
 	fmt.Println("Closing the Pokedex... Goodbye!")
 	os.Exit(0)
-	return fmt.Errorf("os.Exit didn't close properly")
+	return fmt.Errorf("ExitCommand did not close properly\n")
 }
+
