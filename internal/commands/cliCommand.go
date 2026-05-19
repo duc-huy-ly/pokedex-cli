@@ -1,10 +1,13 @@
 package commands
 
-import "fmt"
+import (
+	"fmt"
+)
 
 
 type ICommand interface {
 	Execute() error
+	DisplayInfo()
 }
 type CliCommand struct {
 	Name        string
@@ -15,4 +18,8 @@ type CliCommand struct {
 func (c *CliCommand) Execute() error{
 	fmt.Println("Called execute from parent")
 	return nil
+}
+
+func (c *CliCommand) DisplayInfo (){
+	fmt.Printf("%s : %s\n", c.Name, c.Description)
 }
