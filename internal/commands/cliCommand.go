@@ -26,5 +26,6 @@ func GetCommands(args []string) map[string]ICommand {
 		"mapb": NewCommandMapB(),
 		"explore" : NewCommandExplore(args),
 		"catch": NewCommandCatch(args),
+		"inspect": NewInspectCommand(args),
 	}
 }

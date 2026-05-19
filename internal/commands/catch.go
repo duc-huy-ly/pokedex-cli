@@ -50,7 +50,7 @@ func (command *commandCatch) Execute() error {
 
 // this function could be more intricate, for now it will do
 func calculatePokemonCatchChance(pokemon services.PokemonStruct) bool {
-	var chance float64 = 30.0 / (100.0 + float64(pokemon.BaseExperience))
+	var chance float64 = 60.0 / (100.0 + float64(pokemon.BaseExperience))
 	value := rand.Float64()
 	fmt.Printf("catch chance : %v\nrand value: %v\n",chance, value)
 	return value <= chance

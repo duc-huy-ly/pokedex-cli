@@ -12,6 +12,7 @@ const (
 var CurrentState = ProgramStateStruct{
 	Cache:    *NewCache(DefaultTimeoutDuration),
 	NextPage: PokemonAPIEndpoint,
+	Pokedex: make(map[string]PokemonStruct),
 }
 
 type ProgramStateStruct struct {
