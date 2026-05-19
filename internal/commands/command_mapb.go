@@ -5,13 +5,9 @@ import (
 	"pokedex_cli/internal/services"
 )
 
-// "fmt"
-// "pokedex_cli/internal/pokeapi"
-// "time"
-
 type CommandMapB struct {
 	CliCommand
-	*services.ProgramCurrentState
+	State *services.ProgramStateStruct
 }
 
 func NewCommandMapB() *CommandMapB {
@@ -20,23 +16,23 @@ func NewCommandMapB() *CommandMapB {
 			Name:        "mapb",
 			Description: "Displays the 20 locations of the previous area page",
 		},
-		ProgramCurrentState: &services.CurrentState,
+		State: &services.CurrentState,
 	}
 }
 
 func (c CommandMapB) Execute() error {
-	url := c.ProgramCurrentState.PreviousPage
+	url := c.State.PreviousPage
 	if url == services.PokemonAPIEndpoint || url == "" {
 		url = services.DefaultLocationUrl
 	}
-	locations, err := c.ProgramCurrentState.Cache.LocationAreas(url)
+	locations, err := c.State.Cache.LocationAreas(url)
 	if err != nil {
 		return fmt.Errorf("Something went wrong : %v\n", err)
 	}
 	for _, loc := range locations.Results {
 		fmt.Println(loc.Name)
 	}
-	c.CurrentPage = locations.Next
-	c.PreviousPage = locations.Previous
+	c.State.NextPage = locations.Next
+	c.State.PreviousPage = locations.Previous
 	return nil
 }

@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func StartRepl(cfg *services.ProgramCurrentState) {
+func StartRepl(cfg *services.ProgramStateStruct) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Printf("\nPokedex > ")
@@ -18,7 +18,7 @@ func StartRepl(cfg *services.ProgramCurrentState) {
 		if len(tokens) == 0 {
 			continue
 		}
-		command, exists := commands.GetCommands()[tokens[0]]
+		command, exists := commands.GetCommands(tokens[1:])[tokens[0]]
 		if !exists {
 			fmt.Println("Unknown command")
 			continue

@@ -19,18 +19,10 @@ func NewCommandHelp() *CommandHelp {
 func (c *CommandHelp) Execute() error {
 	fmt.Println("Welcome to the Pokedex!")
 	fmt.Println("Usage:")
-	for _, cmd := range GetCommands() {
+	for _, cmd := range GetCommands(nil) {
 		cmd.DisplayInfo()
 	}
 	fmt.Println()
 	return nil
 }
 
-func GetCommands() map[string]ICommand {
-	return map[string]ICommand{
-		"exit": NewExitCommand(),
-		"help": NewCommandHelp(),	
-		"map": NewCommandMap(),
-		"mapb": NewCommandMapB(),
-	}
-}

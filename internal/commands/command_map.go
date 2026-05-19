@@ -7,7 +7,7 @@ import (
 
 type CommandMap struct {
 	CliCommand
-	*services.ProgramCurrentState
+	state *services.ProgramStateStruct
 }
 
 func NewCommandMap() *CommandMap {
@@ -16,24 +16,24 @@ func NewCommandMap() *CommandMap {
 			Name:        "map",
 			Description: "Displays the 20 locations of the next url page",
 		},
-		ProgramCurrentState: &services.CurrentState,
+		state: &services.CurrentState,
 	}
 }
 
 func (c *CommandMap) Execute() error {
 	// Delegates work to the cache
-	url := c.ProgramCurrentState.CurrentPage
+	url := c.state.NextPage
 	if url == services.PokemonAPIEndpoint || url == "" {
 		url = services.DefaultLocationUrl
 	}
-	locations, err := c.ProgramCurrentState.Cache.LocationAreas(url)
+	locations, err := c.state.Cache.LocationAreas(url)
 	if err != nil {
 		return fmt.Errorf("Something went wrong : %v\n", err)
 	}
 	for _, loc := range locations.Results {
 		fmt.Println(loc.Name)
 	}
-	c.CurrentPage = locations.Next
-	c.PreviousPage = locations.Previous
+	c.state.NextPage = locations.Next
+	c.state.PreviousPage = locations.Previous
 	return nil
 }

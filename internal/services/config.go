@@ -6,16 +6,16 @@ import (
 
 const (
 	PokemonAPIEndpoint     = "https://pokeapi.co/api/v2/"
-	DefaultTimeoutDuration = 10 * time.Second // seconds
+	DefaultTimeoutDuration = 10 * time.Second
 )
 
-var CurrentState = ProgramCurrentState{
-	Cache:       *NewCache(DefaultTimeoutDuration),
-	CurrentPage: PokemonAPIEndpoint,
+var CurrentState = ProgramStateStruct{
+	Cache:    *NewCache(DefaultTimeoutDuration),
+	NextPage: PokemonAPIEndpoint,
 }
 
-type ProgramCurrentState struct {
-	CurrentPage  string
+type ProgramStateStruct struct {
+	NextPage     string
 	PreviousPage string
 	Cache        Pokecache
 }

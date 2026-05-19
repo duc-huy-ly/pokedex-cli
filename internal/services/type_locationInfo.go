@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-type LocationInfo struct {
+type LocationInfoStruct struct {
 	EncounterMethodRates []struct {
 		EncounterMethod struct {
 			Name string `json:"name"`
@@ -58,12 +58,12 @@ type LocationInfo struct {
 	} `json:"pokemon_encounters"`
 }
 
-func UnmarshalToLocationInfo(data []byte) (LocationInfo, error){
-	result := LocationInfo{}
+func UnmarshalToLocationInfo(data []byte) (LocationInfoStruct, error) {
+	result := LocationInfoStruct{}
 	err := json.Unmarshal(data, &result)
 	if err != nil {
 		return result, fmt.Errorf("Error unmarshaling response body, got : %v\n", err)
-		
+
 	}
 	return result, nil
 }

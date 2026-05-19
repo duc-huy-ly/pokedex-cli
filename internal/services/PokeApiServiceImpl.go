@@ -18,6 +18,7 @@ func NewApiCalls(timeoutDuration time.Duration) *PokeApiServiceImpl {
 	}
 }
 
+// Calls the PokeAPIV2 using a http.Client
 func (myClient PokeApiServiceImpl) MakeRequest(requestType string, url string) ([]byte, error) {
 	req, err := http.NewRequest(requestType, url, nil)
 	if err != nil {
