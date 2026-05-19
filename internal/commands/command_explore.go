@@ -2,18 +2,18 @@ package commands
 
 import (
 	"fmt"
-	"pokedex_cli/internal/pokeapi"
+	services "pokedex_cli/internal/services"
 )
 
-func CommandExplore(cfg *pokeapi.Config, args []string) error {
+func CommandExplore(cfg *services.Config, args []string) error {
 	if len(args) == 0 || args[0] == "" {
 		return fmt.Errorf("No region given to explore")
 	}
-	locationUrl := pokeapi.DefaultLocationUrl + "/" + args[0]
+	locationUrl := services.DefaultLocationUrl + "/" + args[0]
 	// with the cache
 	cacheData, exists := cfg.Cache.Get(locationUrl)
 	if exists {
-		decodedResponse, err := pokeapi.UnmarshalToLocationInfo(cacheData)
+		decodedResponse, err := services.UnmarshalToLocationInfo(cacheData)
 		if err != nil {
 			return fmt.Errorf("Error decoding the location info from the response. %v\n", err)
 		}
@@ -25,13 +25,13 @@ func CommandExplore(cfg *pokeapi.Config, args []string) error {
 
 	}
 	// make request to pokemon api endpoint else not in cahce
-	client := pokeapi.NewApiCalls(pokeapi.DefaultTimeoutDuration)
+	client := services.NewApiCalls(services.DefaultTimeoutDuration)
 	resp, err := client.SendRequest("GET", locationUrl)
 	if err != nil {
 		return fmt.Errorf("Command explore : sending request to api failed. %v\n", err)
 	}
 
-	decodedResponse, err := pokeapi.UnmarshalToLocationInfo(resp)
+	decodedResponse, err := services.UnmarshalToLocationInfo(resp)
 	if err != nil {
 		return fmt.Errorf("Error decoding the location info from the response. %v\n", err)
 	}

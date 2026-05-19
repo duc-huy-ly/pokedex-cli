@@ -1,11 +1,13 @@
-package pokecache
+package services
 
 import (
 	"sync"
 	"time"
 )
 
+// Implements the PokeService interface
 type Pokecache struct {
+	Service PokeApiServiceImpl
 	Entries map[string]cacheEntry
 	mu      sync.Mutex
 }
@@ -21,6 +23,10 @@ func NewCache(_interval time.Duration) *Pokecache {
 	}
 	go result.reapLoop(_interval)
 	return &result
+}
+
+func (cache *Pokecache) LocationAreas(url string) []byte {
+	return nil
 }
 
 func (_cache *Pokecache) Add(key string, val []byte) {

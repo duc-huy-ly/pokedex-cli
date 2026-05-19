@@ -1,7 +1,7 @@
 package main
 
-import "pokedex_cli/internal/pokeapi"
+import "pokedex_cli/internal/services"
 
 func main() {
-	StartRepl(&pokeapi.LocalConfig)
+	StartRepl(&services.LocalConfig)
 }

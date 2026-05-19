@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"os"
 	"pokedex_cli/internal/commands"
-	"pokedex_cli/internal/pokeapi"
+	"pokedex_cli/internal/services"
 	"strings"
 )
 
 
 
-func StartRepl(cfg *pokeapi.Config) {
+func StartRepl(cfg *services.Config) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")

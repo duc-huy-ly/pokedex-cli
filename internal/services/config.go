@@ -1,7 +1,6 @@
-package pokeapi
+package services
 
 import (
-	"pokedex_cli/internal/pokecache"
 	"time"
 )
 
@@ -11,11 +10,11 @@ const (
 )
 
 var LocalConfig = Config{
-	Cache: *pokecache.NewCache(DefaultTimeoutDuration),
+	Cache: *NewCache(DefaultTimeoutDuration),
 }
 
 type Config struct {
 	NextPageUrl     string
 	PreviousPageUrl string
-	Cache           pokecache.Pokecache
+	Cache           Pokecache
 }
