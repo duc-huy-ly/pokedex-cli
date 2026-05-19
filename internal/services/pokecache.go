@@ -1,6 +1,7 @@
 package services
 
 import (
+	"encoding/json"
 	"fmt"
 	"sync"
 	"time"
@@ -73,6 +74,30 @@ func (cache *Pokecache) LocationInformation(url string) (LocationInfoStruct, err
 		return LocationInfoStruct{}, err
 	}
 	return result, nil
+}
+
+func (cache *Pokecache) GetPokemon(url string) (PokemonStruct, error) {
+	localData, exists := cache.Get(url)
+	if exists {
+		pokemon := PokemonStruct{}
+		err := json.Unmarshal(localData, &pokemon)
+		if err != nil {
+			return pokemon, fmt.Errorf("Error unmarshaling : %v\n", err)
+		}
+		return pokemon, nil
+	}
+	dataFromServer, err := cache.service.MakeRequest("GET", url)
+	if err != nil {
+		return PokemonStruct{}, fmt.Errorf("Error fetching resource from server. Check spelling of pokemon ? Got: %v\n", err)
+	}
+	pokemon := PokemonStruct{}
+	err = json.Unmarshal(dataFromServer, &pokemon)
+	if err != nil {
+		return pokemon, fmt.Errorf("Error unmarshaling data : %v\n", err)
+	}
+	return pokemon, nil
+
+
 }
 
 // Updates the map of data safely (taking into account concurrency )

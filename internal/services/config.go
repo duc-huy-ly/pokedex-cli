@@ -18,4 +18,5 @@ type ProgramStateStruct struct {
 	NextPage     string
 	PreviousPage string
 	Cache        Pokecache
+	Pokedex map[string]PokemonStruct
 }
