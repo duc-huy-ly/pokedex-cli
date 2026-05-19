@@ -6,19 +6,19 @@ import (
 	"time"
 )
 
-type MyClient struct {
+type APICalls struct {
 	client http.Client
 }
 
-func NewClient(timeoutDuration time.Duration) *MyClient {
-	return &MyClient{
+func NewApiCalls(timeoutDuration time.Duration) *APICalls {
+	return &APICalls{
 		client: http.Client{
 			Timeout: timeoutDuration,
 		},
 	}
 }
 
-func (myClient *MyClient) SendRequest(requestType string, url string) ([]byte , error){
+func (myClient *APICalls) SendRequest(requestType string, url string) ([]byte, error) {
 	req, err := http.NewRequest(requestType, url, nil)
 	if err != nil {
 		return nil, err
@@ -34,7 +34,7 @@ func (myClient *MyClient) SendRequest(requestType string, url string) ([]byte , 
 	}
 	return body, nil
 }
-func MakeRequest(client MyClient, url string) ([]byte, error) {
+func MakeRequest(client APICalls, url string) ([]byte, error) {
 	data, err := client.SendRequest("GET", url)
 	if err != nil {
 		return nil, err

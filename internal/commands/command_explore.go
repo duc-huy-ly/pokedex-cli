@@ -25,7 +25,7 @@ func CommandExplore(cfg *pokeapi.Config, args []string) error {
 
 	}
 	// make request to pokemon api endpoint else not in cahce
-	client := pokeapi.NewClient(pokeapi.DefaultTimeoutDuration)
+	client := pokeapi.NewApiCalls(pokeapi.DefaultTimeoutDuration)
 	resp, err := client.SendRequest("GET", locationUrl)
 	if err != nil {
 		return fmt.Errorf("Command explore : sending request to api failed. %v\n", err)

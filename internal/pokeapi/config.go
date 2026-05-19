@@ -6,8 +6,8 @@ import (
 )
 
 const (
-	PokemonAPIEndpoint    = "https://pokeapi.co/api/v2/"
-	DefaultTimeoutDuration = 10 * time.Second// seconds
+	PokemonAPIEndpoint     = "https://pokeapi.co/api/v2/"
+	DefaultTimeoutDuration = 10 * time.Second // seconds
 )
 
 var LocalConfig = Config{
@@ -17,5 +17,5 @@ var LocalConfig = Config{
 type Config struct {
 	NextPageUrl     string
 	PreviousPageUrl string
-	Cache           pokecache.Cache
+	Cache           pokecache.Pokecache
 }

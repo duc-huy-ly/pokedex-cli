@@ -5,9 +5,34 @@ import (
 	"time"
 
 	"pokedex_cli/internal/pokeapi"
+	"pokedex_cli/internal/pokecache"
 )
 
-func CommandMap(cfg *pokeapi.Config, args []string) error {
+type CommandMap struct {
+	CliCommand
+	nextPageUrl string
+	prevPageUrl string
+	cache       *pokecache.Pokecache // proxy to the server
+}
+
+func NewCommandMap() *CommandMap {
+	return &CommandMap{
+		CliCommand: CliCommand{
+			Name:        "map",
+			Description: "Displays the 20 locations of the next url page",
+		},
+		nextPageUrl: pokeapi.DefaultLocationUrl,
+		cache:       &pokeapi.LocalConfig.Cache,
+	}
+}
+
+func (c *CommandMap) Execute() error {
+	// checks the cache first if we have data
+	fmt.Println("command map executed")
+	return nil
+}
+
+func mapFunction(cfg *pokeapi.Config, args []string) error {
 	url := cfg.NextPageUrl
 	if url == "" {
 		url = pokeapi.DefaultLocationUrl
@@ -31,7 +56,7 @@ func CommandMap(cfg *pokeapi.Config, args []string) error {
 	}
 
 	// case not in case, do the api call
-	client := pokeapi.NewClient(5 * time.Second)
+	client := pokeapi.NewApiCalls(5 * time.Second)
 	request, err := pokeapi.MakeRequest(*client, url)
 	if err != nil {
 		return fmt.Errorf("%v\n", err)

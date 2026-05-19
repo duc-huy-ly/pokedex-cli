@@ -30,7 +30,7 @@ func CommandMapB(cfg *pokeapi.Config, args []string) error {
 	}
 
 	// case not in case, do the api call
-	client := pokeapi.NewClient(5 * time.Second)
+	client := pokeapi.NewApiCalls(5 * time.Second)
 	request, err := pokeapi.MakeRequest(*client, url)
 	if err != nil {
 		return fmt.Errorf("%v\n", err)

@@ -32,5 +32,6 @@ func GetCommands() map[string]ICommand {
 	return map[string]ICommand{
 		"exit": NewExitCommand(),
 		"help": NewCommandHelp(),	
+		"map": NewCommandMap(),
 	}
 }

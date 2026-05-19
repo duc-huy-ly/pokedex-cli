@@ -4,7 +4,8 @@ import (
 	"sync"
 	"time"
 )
-type Cache struct {
+
+type Pokecache struct {
 	Entries map[string]cacheEntry
 	mu      sync.Mutex
 }
@@ -13,8 +14,8 @@ type cacheEntry struct {
 	Val       []byte
 }
 
-func NewCache(_interval time.Duration) *Cache {
-	result := Cache{
+func NewCache(_interval time.Duration) *Pokecache {
+	result := Pokecache{
 		Entries: make(map[string]cacheEntry),
 		mu:      sync.Mutex{},
 	}
@@ -22,7 +23,7 @@ func NewCache(_interval time.Duration) *Cache {
 	return &result
 }
 
-func (_cache *Cache) Add(key string, val []byte) {
+func (_cache *Pokecache) Add(key string, val []byte) {
 	_cache.mu.Lock()
 	defer _cache.mu.Unlock()
 	_cache.Entries[key] = cacheEntry{
@@ -31,7 +32,7 @@ func (_cache *Cache) Add(key string, val []byte) {
 	}
 }
 
-func (_cache *Cache) Get(key string) ([]byte, bool) {
+func (_cache *Pokecache) Get(key string) ([]byte, bool) {
 	_cache.mu.Lock()
 	defer _cache.mu.Unlock()
 	result, exists := _cache.Entries[key]
@@ -41,7 +42,7 @@ func (_cache *Cache) Get(key string) ([]byte, bool) {
 	return result.Val, true
 }
 
-func (_cache *Cache) reapLoop(interval time.Duration) {
+func (_cache *Pokecache) reapLoop(interval time.Duration) {
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
 	for range ticker.C {

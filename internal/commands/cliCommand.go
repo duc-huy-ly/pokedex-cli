@@ -15,11 +15,6 @@ type CliCommand struct {
 	Arguments   []string
 }
 
-func (c *CliCommand) Execute() error{
-	fmt.Println("Called execute from parent")
-	return nil
-}
-
 func (c *CliCommand) DisplayInfo (){
 	fmt.Printf("%s : %s\n", c.Name, c.Description)
 }
