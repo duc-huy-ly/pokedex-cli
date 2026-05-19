@@ -10,6 +10,8 @@ type PokeApiServiceImpl struct {
 	client http.Client
 }
 
+
+
 func NewApiCalls(timeoutDuration time.Duration) *PokeApiServiceImpl {
 	return &PokeApiServiceImpl{
 		client: http.Client{
@@ -18,7 +20,7 @@ func NewApiCalls(timeoutDuration time.Duration) *PokeApiServiceImpl {
 	}
 }
 
-func (myClient *PokeApiServiceImpl) SendRequest(requestType string, url string) ([]byte, error) {
+func (myClient PokeApiServiceImpl) MakeRequest(requestType string, url string) ([]byte, error) {
 	req, err := http.NewRequest(requestType, url, nil)
 	if err != nil {
 		return nil, err
@@ -32,12 +34,8 @@ func (myClient *PokeApiServiceImpl) SendRequest(requestType string, url string) 
 	if err != nil {
 		return nil, err
 	}
-	return body, nil
-}
-func MakeRequest(client PokeApiServiceImpl, url string) ([]byte, error) {
-	data, err := client.SendRequest("GET", url)
 	if err != nil {
 		return nil, err
 	}
-	return data, err
+	return body, err
 }

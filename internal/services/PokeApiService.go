@@ -1,6 +1,6 @@
 package services
 
 type PokeapiService interface {
-	LocationAreas(string) []byte
-	AreaInformation(string) []byte
+	LocationAreas(string) (ListOfLocations, error)
+	AreaInformation(string) (LocationInfo, error)
 }

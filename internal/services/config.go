@@ -9,12 +9,13 @@ const (
 	DefaultTimeoutDuration = 10 * time.Second // seconds
 )
 
-var LocalConfig = Config{
-	Cache: *NewCache(DefaultTimeoutDuration),
+var CurrentState = ProgramCurrentState{
+	Cache:       *NewCache(DefaultTimeoutDuration),
+	CurrentPage: PokemonAPIEndpoint,
 }
 
-type Config struct {
-	NextPageUrl     string
-	PreviousPageUrl string
-	Cache           Pokecache
+type ProgramCurrentState struct {
+	CurrentPage  string
+	PreviousPage string
+	Cache        Pokecache
 }

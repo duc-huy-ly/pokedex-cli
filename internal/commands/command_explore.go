@@ -1,45 +1,45 @@
 package commands
 
 import (
-	"fmt"
-	services "pokedex_cli/internal/services"
+	// "fmt"
+	// services "pokedex_cli/internal/services"
 )
 
-func CommandExplore(cfg *services.Config, args []string) error {
-	if len(args) == 0 || args[0] == "" {
-		return fmt.Errorf("No region given to explore")
-	}
-	locationUrl := services.DefaultLocationUrl + "/" + args[0]
-	// with the cache
-	cacheData, exists := cfg.Cache.Get(locationUrl)
-	if exists {
-		decodedResponse, err := services.UnmarshalToLocationInfo(cacheData)
-		if err != nil {
-			return fmt.Errorf("Error decoding the location info from the response. %v\n", err)
-		}
-		for _, pokemon := range decodedResponse.PokemonEncounters {
-			fmt.Printf(" - %v\n", pokemon.Pokemon.Name)
-		}
-		fmt.Printf("-------------Taken from cache ------------\n")
-		return nil
+// func CommandExplore(cfg *services.Config, args []string) error {
+	// if len(args) == 0 || args[0] == "" {
+	// 	return fmt.Errorf("No region given to explore")
+	// }
+	// locationUrl := services.DefaultLocationUrl + "/" + args[0]
+	// // with the cache
+	// cacheData, exists := cfg.Cache.Get(locationUrl)
+	// if exists {
+	// 	decodedResponse, err := services.UnmarshalToLocationInfo(cacheData)
+	// 	if err != nil {
+	// 		return fmt.Errorf("Error decoding the location info from the response. %v\n", err)
+	// 	}
+	// 	for _, pokemon := range decodedResponse.PokemonEncounters {
+	// 		fmt.Printf(" - %v\n", pokemon.Pokemon.Name)
+	// 	}
+	// 	fmt.Printf("-------------Taken from cache ------------\n")
+	// 	return nil
 
-	}
-	// make request to pokemon api endpoint else not in cahce
-	client := services.NewApiCalls(services.DefaultTimeoutDuration)
-	resp, err := client.SendRequest("GET", locationUrl)
-	if err != nil {
-		return fmt.Errorf("Command explore : sending request to api failed. %v\n", err)
-	}
+	// }
+	// // make request to pokemon api endpoint else not in cahce
+	// client := services.NewApiCalls(services.DefaultTimeoutDuration)
+	// resp, err := client.SendRequest("GET", locationUrl)
+	// if err != nil {
+	// 	return fmt.Errorf("Command explore : sending request to api failed. %v\n", err)
+	// }
 
-	decodedResponse, err := services.UnmarshalToLocationInfo(resp)
-	if err != nil {
-		return fmt.Errorf("Error decoding the location info from the response. %v\n", err)
-	}
+	// decodedResponse, err := services.UnmarshalToLocationInfo(resp)
+	// if err != nil {
+	// 	return fmt.Errorf("Error decoding the location info from the response. %v\n", err)
+	// }
 
-	for _, pokemon := range decodedResponse.PokemonEncounters {
-		fmt.Printf(" - %v\n", pokemon.Pokemon.Name)
-	}
+	// for _, pokemon := range decodedResponse.PokemonEncounters {
+	// 	fmt.Printf(" - %v\n", pokemon.Pokemon.Name)
+	// }
 
-	cfg.Cache.Add(locationUrl, resp)
-	return nil
-}
+	// cfg.Cache.Add(locationUrl, resp)
+	// return nil
+// }

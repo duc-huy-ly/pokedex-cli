@@ -9,12 +9,10 @@ import (
 	"strings"
 )
 
-
-
-func StartRepl(cfg *services.Config) {
+func StartRepl(cfg *services.ProgramCurrentState) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
-		fmt.Print("Pokedex > ")
+		fmt.Printf("\nPokedex > ")
 		_ = scanner.Scan()
 		tokens := CleanInput(scanner.Text())
 		if len(tokens) == 0 {
@@ -35,4 +33,3 @@ func StartRepl(cfg *services.Config) {
 func CleanInput(text string) []string {
 	return strings.Fields(strings.ToLower(text))
 }
-

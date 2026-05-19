@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"sync"
 	"time"
 )
@@ -25,8 +26,29 @@ func NewCache(_interval time.Duration) *Pokecache {
 	return &result
 }
 
-func (cache *Pokecache) LocationAreas(url string) []byte {
-	return nil
+func (cache *Pokecache) LocationAreas(url string) (ListOfLocations, error) {
+	// If data not found in cache, delegate work to the real service which will make the api call
+	data, exists := cache.Get(url)
+	if exists {
+		fmt.Println("------CACHE-----")
+		result, err := UnmarshalDataToListOfLocation(data)
+		if err != nil {
+			return ListOfLocations{}, fmt.Errorf("Error encountered while unmarshaling data: %v\n", err)
+		}
+		return result, nil
+
+	}
+	// write to cache before returning the result of the request
+	data, err := cache.Service.MakeRequest("GET", url)
+	if err != nil {
+		return ListOfLocations{}, err
+	}
+	cache.Add(url, data)
+	result, err := UnmarshalDataToListOfLocation(data)
+	if err != nil {
+		return ListOfLocations{}, fmt.Errorf("Error unmarshaling the data to ListOfLocation : %v\n", err)
+	}
+	return result, nil
 }
 
 func (_cache *Pokecache) Add(key string, val []byte) {
