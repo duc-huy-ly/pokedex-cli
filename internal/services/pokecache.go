@@ -12,6 +12,7 @@ type Pokecache struct {
 	Entries map[string]cacheEntry
 	mu      sync.Mutex
 }
+
 type cacheEntry struct {
 	CreatedAt time.Time
 	Val       []byte
@@ -26,8 +27,9 @@ func NewCache(_interval time.Duration) *Pokecache {
 	return &result
 }
 
+// The method will check if there the requested data exists locallly (cache). If not makes a http GET request to 
+// the pokemonAPIV2, adds the data to the cache before Unmarshaling and returning the result
 func (cache *Pokecache) LocationAreas(url string) (ListOfLocations, error) {
-	// If data not found in cache, delegate work to the real service which will make the api call
 	data, exists := cache.Get(url)
 	if exists {
 		fmt.Println("------CACHE-----")

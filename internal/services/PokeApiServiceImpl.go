@@ -10,8 +10,6 @@ type PokeApiServiceImpl struct {
 	client http.Client
 }
 
-
-
 func NewApiCalls(timeoutDuration time.Duration) *PokeApiServiceImpl {
 	return &PokeApiServiceImpl{
 		client: http.Client{
