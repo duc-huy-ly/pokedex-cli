@@ -5,27 +5,25 @@ import (
 	"fmt"
 	"os"
 	"pokedex_cli/internal/commands"
-	"pokedex_cli/internal/pokeapi"
+	"pokedex_cli/internal/services"
 	"strings"
 )
 
-
-
-func StartRepl(cfg *pokeapi.Config) {
+func StartRepl(cfg *services.ProgramStateStruct) {
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
-		fmt.Print("Pokedex > ")
+		fmt.Printf("\nPokedex > ")
 		_ = scanner.Scan()
-		token := CleanInput(scanner.Text())
-		if len(token) == 0 {
+		tokens := CleanInput(scanner.Text())
+		if len(tokens) == 0 {
 			continue
 		}
-		command, exists := commands.GetCommands()[token[0]]
+		command, exists := commands.GetCommands(tokens[1:])[tokens[0]]
 		if !exists {
 			fmt.Println("Unknown command")
 			continue
 		}
-		err := command.Callback(cfg, token[1:])
+		err := command.Execute()
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -35,4 +33,3 @@ func StartRepl(cfg *pokeapi.Config) {
 func CleanInput(text string) []string {
 	return strings.Fields(strings.ToLower(text))
 }
-

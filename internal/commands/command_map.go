@@ -2,50 +2,38 @@ package commands
 
 import (
 	"fmt"
-	"time"
-
-	"pokedex_cli/internal/pokeapi"
+	"pokedex_cli/internal/services"
 )
 
-func CommandMap(cfg *pokeapi.Config, args []string) error {
-	url := cfg.NextPageUrl
-	if url == "" {
-		url = pokeapi.DefaultLocationUrl
-	}
-	// Cache first
-	data, exists := cfg.Cache.Get(url)
-	if exists {
-		locations, err := pokeapi.UnmarshalLocation(data)
-		if err != nil {
-			return err
-		}
-		for _, location := range locations.Results {
-			fmt.Println(location.Name)
-		}
-		cfg.PreviousPageUrl = locations.Previous
-		cfg.NextPageUrl = locations.Next
-		fmt.Println("#########################")
-		fmt.Println("Data recovered from cache")
-		fmt.Println("#########################")
-		return nil
-	}
+type CommandMap struct {
+	CliCommand
+	state *services.ProgramStateStruct
+}
 
-	// case not in case, do the api call
-	client := pokeapi.NewClient(5 * time.Second)
-	request, err := pokeapi.MakeRequest(*client, url)
-	if err != nil {
-		return fmt.Errorf("%v\n", err)
+func NewCommandMap() *CommandMap {
+	return &CommandMap{
+		CliCommand: CliCommand{
+			Name:        "map",
+			Description: "Displays the 20 locations of the next url page",
+		},
+		state: &services.CurrentState,
 	}
-	locations, err := pokeapi.UnmarshalLocation(request)
-	if err != nil {
-		return err
-	}
-	for _, result := range locations.Results {
-		fmt.Println(result.Name)
-	}
-	cfg.NextPageUrl = locations.Next
-	cfg.PreviousPageUrl = locations.Previous
+}
 
-	cfg.Cache.Add(url, request)
+func (c *CommandMap) Execute() error {
+	// Delegates work to the cache
+	url := c.state.NextPage
+	if url == services.PokemonAPIEndpoint || url == "" {
+		url = services.DefaultLocationUrl
+	}
+	locations, err := c.state.Cache.LocationAreas(url)
+	if err != nil {
+		return fmt.Errorf("Something went wrong : %v\n", err)
+	}
+	for _, loc := range locations.Results {
+		fmt.Println(loc.Name)
+	}
+	c.state.NextPage = locations.Next
+	c.state.PreviousPage = locations.Previous
 	return nil
 }

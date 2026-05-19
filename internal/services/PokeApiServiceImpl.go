@@ -1,4 +1,4 @@
-package pokeapi
+package services
 
 import (
 	"io"
@@ -6,19 +6,20 @@ import (
 	"time"
 )
 
-type MyClient struct {
+type PokeApiServiceImpl struct {
 	client http.Client
 }
 
-func NewClient(timeoutDuration time.Duration) *MyClient {
-	return &MyClient{
+func NewApiCalls(timeoutDuration time.Duration) *PokeApiServiceImpl {
+	return &PokeApiServiceImpl{
 		client: http.Client{
 			Timeout: timeoutDuration,
 		},
 	}
 }
 
-func (myClient *MyClient) SendRequest(requestType string, url string) ([]byte , error){
+// Calls the PokeAPIV2 using a http.Client
+func (myClient PokeApiServiceImpl) MakeRequest(requestType string, url string) ([]byte, error) {
 	req, err := http.NewRequest(requestType, url, nil)
 	if err != nil {
 		return nil, err
@@ -32,12 +33,8 @@ func (myClient *MyClient) SendRequest(requestType string, url string) ([]byte , 
 	if err != nil {
 		return nil, err
 	}
-	return body, nil
-}
-func MakeRequest(client MyClient, url string) ([]byte, error) {
-	data, err := client.SendRequest("GET", url)
 	if err != nil {
 		return nil, err
 	}
-	return data, err
+	return body, err
 }

@@ -1,4 +1,4 @@
-package pokeapi
+package services
 
 import (
 	"encoding/json"
@@ -7,7 +7,7 @@ import (
 
 const DefaultLocationUrl = "https://pokeapi.co/api/v2/location-area/"
 
-type LocationStruct struct {
+type ListOfLocations struct {
 	Count    int    `json:"count"`
 	Next     string `json:"next"`
 	Previous string `json:"previous"`
@@ -17,10 +17,8 @@ type LocationStruct struct {
 	} `json:"results"`
 }
 
-
-
-func UnmarshalLocation(data []byte) (LocationStruct, error) {
-	request := LocationStruct{}
+func UnmarshalDataToListOfLocation(data []byte) (ListOfLocations, error) {
+	request := ListOfLocations{}
 	err := json.Unmarshal(data, &request)
 	if err != nil {
 		return request, fmt.Errorf("Error unmarshaling response body, got : %v\n", err)
