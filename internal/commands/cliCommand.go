@@ -27,5 +27,6 @@ func GetCommands(args []string) map[string]ICommand {
 		"explore" : NewCommandExplore(args),
 		"catch": NewCommandCatch(args),
 		"inspect": NewInspectCommand(args),
+		"pokedex": NewPokedexCommand(),
 	}
 }
